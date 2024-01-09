@@ -3,7 +3,7 @@ import inspect
 from typing import Any, Callable, NewType, Sequence, Union
 
 from django.contrib.admin.sites import AdminSite
-from django.urls import URLPattern, URLResolver, path
+from django.urls import URLPattern, URLResolver, re_path
 from django.utils.text import capfirst
 from django.views.generic import View
 
@@ -57,7 +57,7 @@ class AdminPlusMixin(object):
         urls: list[Union[URLPattern, URLResolver]] = super().get_urls()
         for av in self.custom_views:
             urls.insert(
-                0, path(av.path, self.admin_view(av.view), name=av.urlname))
+                0, re_path(av.path, self.admin_view(av.view), name=av.urlname))
         return urls
 
     def index(self, request, extra_context=None):
